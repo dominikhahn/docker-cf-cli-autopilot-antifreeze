@@ -18,7 +18,7 @@ RUN wget -O - "http://cli.run.pivotal.io/stable?release=linux64-binary&source=gi
 
 # Install autopilot
 RUN go get github.com/concourse/autopilot
-RUN cf install-plugin $GOPATH/autopilot -f
+RUN cf install-plugin $GOPATH/bin/autopilot -f
 
 # Install Antifreeze
 RUN go get github.com/odlp/antifreeze
