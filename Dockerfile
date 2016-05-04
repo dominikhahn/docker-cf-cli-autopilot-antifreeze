@@ -1,29 +1,25 @@
 # Pull base image.
-FROM debian:latest
+FROM alpine:latest
 
 MAINTAINER Dominik Hahn <dominik@monostream.com>
 
 # Define working directory.
 WORKDIR ["/workspace"]
 
-ENV GOPATH="/usr/local/bin"
+# Set GOPATH variable
+ENV GOPATH /usr/local/bin
 
 # Install cf-cli, golang and zip
-RUN apt-get update -q \
-  && apt-get upgrade -y -q \
-  && apt-get -y -q install wget ca-certificates golang git zip curl xz-utils
+RUN apk update --quiet \
+  && apk upgrade --quiet \
+  && apk add --quiet wget ca-certificates go git zip curl \
+  && rm -rf /var/cache/apk/*
 RUN wget -O - "http://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
-RUN export GOPATH="/usr/local/bin"
 
 # Install autopilot
 RUN go get github.com/concourse/autopilot
-RUN cf install-plugin $GOPATH/bin/autopilot
+RUN cf install-plugin $GOPATH/autopilot -f
 
 # Install Antifreeze
 RUN go get github.com/odlp/antifreeze
-RUN cf install-plugin $GOPATH/bin/antifreeze
-
-# Cleanup image
-RUN apt-get autoremove -y -q
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/* /var/tmp/*
+RUN cf install-plugin $GOPATH/bin/antifreeze -f
