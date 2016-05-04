@@ -12,7 +12,7 @@ ENV GOPATH /usr/local/bin
 # Install cf-cli, golang and zip
 RUN apk update --quiet \
   && apk upgrade --quiet \
-  && apk add --quiet wget ca-certificates go git zip curl \
+  && apk add --quiet bash wget ca-certificates go git zip curl \
   && rm -rf /var/cache/apk/*
 RUN wget -O - "http://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
 
@@ -24,4 +24,4 @@ RUN cf install-plugin $GOPATH/bin/autopilot -f
 RUN go get github.com/odlp/antifreeze
 RUN cf install-plugin $GOPATH/bin/antifreeze -f
 
-ENTRYPOINT ["/bin/ash"]
+ENTRYPOINT ["/bin/bash"]
