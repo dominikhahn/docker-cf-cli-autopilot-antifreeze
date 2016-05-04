@@ -23,3 +23,5 @@ RUN cf install-plugin $GOPATH/bin/autopilot -f
 # Install Antifreeze
 RUN go get github.com/odlp/antifreeze
 RUN cf install-plugin $GOPATH/bin/antifreeze -f
+
+ENTRYPOINT ["/bin/ash"]
