@@ -18,7 +18,7 @@ A docker alpine image which includes the latest cf cli, autopilot and antifreeze
 	#Containername
 	NAME="Example"
 	
-	# Start the container in deatached mode
+	# Start the container in detached mode
 	docker run -it -d --hostname="$NAME" --name="$NAME" -v "$(pwd)=/workspace/" dominikhahn/docker-cf-cli-autopilot-antifreeze:latest
 	
 	# Execute commands inside the container
