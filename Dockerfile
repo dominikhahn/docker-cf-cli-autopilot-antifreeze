@@ -15,7 +15,7 @@ RUN apk --update add --quiet --no-cache ca-certificates go git zip \
 RUN wget -O - "http://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
 
 # Install autopilot
-RUN go get github.com/concourse/autopilot \
+RUN go get github.com/contraband/autopilot \
   && cf install-plugin $GOPATH/bin/autopilot -f
 
 # Install Antifreeze
