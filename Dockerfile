@@ -9,17 +9,24 @@ WORKDIR ["/workspace"]
 # Set GOPATH variable
 ENV GOPATH /usr/local/bin
 
-# Install cf-cli, golang and zip
-RUN apk --update add --quiet --no-cache ca-certificates go git zip \
-  && rm -rf /var/cache/apk/*
-RUN wget -O - "http://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
+# Install openssl
+  RUN apk --update add --quiet --no-cache openssl
 
-# Install autopilot
-RUN go get github.com/contraband/autopilot \
-  && cf install-plugin $GOPATH/bin/autopilot -f
+# Install build dependencies
+RUN apk --update add --quiet --no-cache --virtual build-dependencies go git zip
 
-# Install Antifreeze
-RUN go get github.com/odlp/antifreeze \
-  && cf install-plugin $GOPATH/bin/antifreeze -f
+# Install cf cli
+RUN wget -O - "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
+
+# Install Diego-Enabler, Antifreeze and autopilot
+RUN cf install-plugin Diego-Enabler -f -r CF-Community && \
+    go get github.com/contraband/autopilot && \
+    cf install-plugin $GOPATH/bin/autopilot -f && \
+    go get github.com/odlp/antifreeze && \
+    cf install-plugin $GOPATH/bin/antifreeze -f
+
+# Removing build dependencies
+RUN apk del build-dependencies && \
+    rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/bin/ash"]
