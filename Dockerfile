@@ -10,10 +10,10 @@ WORKDIR /workspace
 ENV GOPATH /usr/local/bin
 
 # Install openssl
-  RUN apk --update add --quiet --no-cache openssl go
+  RUN apk --update add --quiet --no-cache openssl go zip
 
 # Install build dependencies
-RUN apk --update add --quiet --no-cache --virtual build-dependencies git zip
+RUN apk --update add --quiet --no-cache --virtual build-dependencies git
 
 # Install cf cli
 RUN wget -O - "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
