@@ -4,16 +4,16 @@ FROM alpine:latest
 MAINTAINER Dominik Hahn <dominik@monostream.com>
 
 # Define working directory.
-WORKDIR ["/workspace"]
+WORKDIR /workspace
 
 # Set GOPATH variable
 ENV GOPATH /usr/local/bin
 
 # Install openssl
-  RUN apk --update add --quiet --no-cache openssl
+  RUN apk --update add --quiet --no-cache openssl go
 
 # Install build dependencies
-RUN apk --update add --quiet --no-cache --virtual build-dependencies go git zip
+RUN apk --update add --quiet --no-cache --virtual build-dependencies git zip
 
 # Install cf cli
 RUN wget -O - "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -C /usr/local/bin -zxf -
